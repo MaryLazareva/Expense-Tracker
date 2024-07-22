@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+    <div class="container mx-auto mt-10">
+        <h1 class="text-3xl font-bold mb-4">Expense Tracker</h1>
+        <!-- Блок для авторизации/регистрации -->
+        <div id="authForms" class="mb-4">
+            <h2 class="text-2xl font-bold mb-2">Register</h2>
+            <!-- Форма регистрации -->
+            <form id="registerForm" method="post" class="mb-4">
+                <input type="text" id="registerUsername" placeholder="Username" class="border p-2 w-full mb-2">
+                <input type="email" id="registerEmail" placeholder="Email" class="border p-2 w-full mb-2">
+                <div class="relative">
+                    <input type="password" id="registerPassword" placeholder="Password" class="border p-2 w-full mb-2">
+                    <button type="button" class="absolute inset-y-0 right-0 px-3 py-2" onclick="togglePasswordVisibility('registerPassword')">👁️‍🗨️</button>
+                </div>
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Register</button>
+            </form>
+            <h2 class="text-2xl font-bold mb-2">Login</h2>
+            <!-- Форма авторизации -->
+            <form id="loginForm" method="post" class="mb-4">
+                <input type="email" id="loginEmail" placeholder="Email" class="border p-2 w-full mb-2">
+                <div class="relative">
+                    <input type="password" id="loginPassword" placeholder="Password" class="border p-2 w-full mb-2">
+                    <button type="button" class="absolute inset-y-0 right-0 px-3 py-2" onclick="togglePasswordVisibility('loginPassword')">👁️‍🗨️</button>
+                </div>
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Login</button>
+            </form>
+        </div>
+        <!-- Контент для авторизованных пользователей -->
+        <div id="loggedInContent" style="display: none;">
+            <!-- Форма добавления нового расхода -->
+            <form id="addExpenseForm" method="post" class="mb-4">
+                <input type="text" id="title" placeholder="Title" class="border p-2 w-full mb-2" required>
+                <input type="number" id="price" placeholder="Price" class="border p-2 w-full mb-2" required>
+                <input type="date" id="date" placeholder="Date" class="border p-2 w-full mb-2">
+                <select id="categoryId" class="border p-2 w-full mb-2"></select>
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Add</button>
+                <button type="button" id="showCategoryFormButton" class="bg-green-500 text-white py-2 px-4 rounded float-right">Добавить категорию</button>
+                <button type="button" id="showDeleteCategoryFormButton" class="bg-red-500 text-white py-2 px-4 rounded float-right mr-2">Удалить категорию</button>
+            </form>   
+
+            <!-- Форма для добавления новой категории -->
+            <form id="addCategoryForm" style="display: none;" class="mb-4">
+                <input type="text" id="newCategoryName" placeholder="New Category" class="border p-2 w-full mb-2" required>
+                <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded">Add Category</button>
+            </form>
+
+            <!-- Форма для удаления категории -->
+            <form id="deleteCategoryForm" style="display: none;" class="mb-4">
+                <select id="deleteCategoryId" class="border p-2 w-full mb-2"></select>
+                <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded">Delete Category</button>
+            </form>
+
+            <!-- Форма для  фильтрации расходов -->         
+            <form id="dateRangeForm" method="post" class="mb-4">
+                <label for="startDate">Start Date:</label>
+                <input type="date" id="startDate" class="border p-2 mb-2">
+                <label for="endDate">End Date:</label>
+                <input type="date" id="endDate" class="border p-2 mb-2">
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Filter</button>
+            </form>
+
+            <div id="chartsContainer" class="mb-4"></div>
+            <div id="tableContainer" class="mt-6"></div>
+            <button id="logoutButton" class="bg-red-500 text-white py-2 px-4 rounded">Logout</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>
+
+
