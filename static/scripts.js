@@ -513,6 +513,7 @@ function editExpense(expenseId, currentTitle, currentPrice, currentDate, current
     }
 }
 
+// Переключение видимости пароля при нажатии на кнопку 
 function togglePasswordVisibility(inputId) {
     const input = document.getElementById(inputId);
     if (input.type === 'password') {
